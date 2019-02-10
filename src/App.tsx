@@ -1,39 +1,24 @@
 import React from "react";
-import { UsersPage } from "./UsersPage";
-import { WelcomePage } from "./WelcomePage";
-import { AppState, useAppState } from "./AppState";
+import Page1 from "./Page1";
+import Page2 from "./Page2";
+import { useStore } from "./Store";
+import { useUrlStore as useUrlStoreImport } from "./StoreUrl";
 
-interface MoreAppState {
-  randomValue: string;
-}
-
-const initialAppState: AppState & MoreAppState = {
-  pendingRequests: [], // unique uuids representing requests in progress
-  urlAnchor: "#welcome", // initial page
-  urlParameters: {},
-  randomValue: "9a2d5be3-6c8e-4a42-b92d-168a1fa08a74",
-  width: 0,
-  height: 0
-};
-
-export const AppContext = React.createContext<any>(null);
+export const useUrlStore = useUrlStoreImport({
+  urlAnchor: "#page2",
+  urlParameters: {}
+});
+export const useCountStore = useStore(0);
 
 const App = () => {
-  const [appState, setAppState] = useAppState(initialAppState);
-  console.log("appState", appState);
-  return (
-    <AppContext.Provider value={{ appState, setAppState }}>
-      {(() => {
-        if (appState.urlAnchor === "#welcome") {
-          return <WelcomePage />;
-        } else if (appState.urlAnchor === "#users") {
-          return <UsersPage />;
-        } else {
-          return <div>No matching page</div>;
-        }
-      })()}
-    </AppContext.Provider>
-  );
+  const [url] = useUrlStore();
+  if (url.urlAnchor === "#page1") {
+    return <Page1 />;
+  } else if (url.urlAnchor === "#page2") {
+    return <Page2 />;
+  } else {
+    return <div>no page</div>;
+  }
 };
 
 export default App;

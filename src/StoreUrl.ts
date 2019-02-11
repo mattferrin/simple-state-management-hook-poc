@@ -19,7 +19,6 @@ const enhanceStateUsingUrl = (state: any) => {
 };
 
 const urlOnce = once((url: any, setUrl: any) => {
-  enhanceStateUsingUrl(url);
   window.onpopstate = () => {
     const enhanced = enhanceStateUsingUrl(url);
     return setUrl(enhanced);
@@ -27,6 +26,7 @@ const urlOnce = once((url: any, setUrl: any) => {
 });
 
 export let useUrlStore = (urlInitial: any) => {
+  urlInitial = enhanceStateUsingUrl(urlInitial);
   return () => {
     const [url, setUrl] = useUrlStoreOnce(urlInitial)();
     urlOnce(url, setUrl);

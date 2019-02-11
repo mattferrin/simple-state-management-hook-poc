@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./Page1.css";
 import { useCountStore } from "./App";
 import { useUrlStore } from "./App";
+import { useResizeStore } from "./StoreResize";
 
 export const increment = (count: any, setCount: any) => {
   return () => {
@@ -19,11 +20,15 @@ export const navigate = (url: any, setUrl: any) => {
 const Page1 = () => {
   const [count, setCount] = useCountStore();
   const [url, setUrl] = useUrlStore();
+  const resize = useResizeStore();
 
   return (
     <div className="Page1">
       <header className="Page1-header">
         <img src={logo} className="Page1-logo" alt="logo" />
+        <p>
+          Width: {resize.width}, Height: {resize.height}
+        </p>
         <p>
           Edit <code>src/Page1.tsx</code> and save to reload.
         </p>
